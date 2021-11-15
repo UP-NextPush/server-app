@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
-    <id>unifiedpushprovider</id>
+    <id>uppush</id>
     <name>Unified Push Provider</name>
     <summary>Use Nextcloud as a push provider for mobile phones&#39; notifications</summary>
     <description><![CDATA[Once the mobile phone is connected, push notifications can be forwarded to applications implementing UnifiedPush.
@@ -19,7 +19,7 @@ More information about UnifiedPush at https://unifiedpush.org]]></description>
     <navigations>
         <navigation>
             <name>Unified Push Provider</name>
-            <route>unifiedpushprovider.page.index</route>
+            <route>uppush.page.index</route>
         </navigation>
     </navigations>
 </info>
