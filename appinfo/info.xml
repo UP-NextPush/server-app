@@ -16,10 +16,8 @@ More information about UnifiedPush at https://unifiedpush.org]]></description>
     <dependencies>
         <nextcloud min-version="19" max-version="22"/>
     </dependencies>
-    <navigations>
-        <navigation>
-            <name>Unified Push Provider</name>
-            <route>uppush.page.index</route>
-        </navigation>
-    </navigations>
+    <settings>
+        <admin>OCA\UnifiedPushProvider\Settings\AdminSettings</admin>
+        <admin-section>OCA\UnifiedPushProvider\Settings\UnifiedPushProviderSection</admin-section>
+    </settings>
 </info>
