@@ -29,7 +29,7 @@ return [
 		],
 		[
 			'name' => 'UnifiedPushProvider#deleteApp',
-			'url' => '/app/',
+			'url' => '/app/{token}',
 			'verb' => 'DELETE',
 		],
 		[

@@ -1,5 +1,5 @@
 # Unified Push Provider
-Place this app in **nextcloud/apps/**
+Move this app to **nextcloud/apps/uppush**
 
 ## Building the app
 

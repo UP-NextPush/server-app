@@ -29,7 +29,7 @@ function setKeepalive(){
 </script>
 <div id="uppush-admin" class="section">
 <h2>UnifiedPush Provider Settings</h2>
-<p class="settings-hint">set up the service and solve common problems.</p>
+<p class="settings-hint">Set up the service and solve common problems.</p>
 <p>This has been set up with the objective of making installation and configuration as painless as possible, however, there are certain requirements that must be met in order for the system to perform correctly.</p>
 <br><div>
 <b>1)</b> This service required Redis to be installed and configured for use by Nextcloud. The database ID used will be 1 higher than the database ID used by Nextcloud.<br>

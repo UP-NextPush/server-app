@@ -193,7 +193,6 @@ class UnifiedPushProviderController extends Controller {
 	 * Delete a device.
 	 *
 	 * @NoAdminRequired
-	 * @CORS
 	 * @NoCSRFRequired
 	 *
 	 * @param string $deviceId
@@ -250,7 +249,6 @@ class UnifiedPushProviderController extends Controller {
 	 * Delete an authorization token.
 	 *
 	 * @NoAdminRequired
-	 * @CORS
 	 * @NoCSRFRequired
 	 *
 	 * @param string $token

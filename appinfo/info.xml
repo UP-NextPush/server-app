@@ -19,5 +19,7 @@ More information about UnifiedPush at https://unifiedpush.org]]></description>
     <settings>
         <admin>OCA\UnifiedPushProvider\Settings\AdminSettings</admin>
         <admin-section>OCA\UnifiedPushProvider\Settings\UnifiedPushProviderSection</admin-section>
+        <personal>OCA\UnifiedPushProvider\Settings\PersonalSettings</personal>
+        <personal-section>OCA\UnifiedPushProvider\Settings\UnifiedPushProviderSection</personal-section>
     </settings>
 </info>
