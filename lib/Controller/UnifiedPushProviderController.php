@@ -189,7 +189,7 @@ class UnifiedPushProviderController extends Controller {
 					if (getmypid() != explode("_", $element[1])[1]) return(0);
 					else continue;
 				}
-				echo 'event: message'.PHP_EOL;
+				echo 'event: '.json_decode($element[1])->type.PHP_EOL;
 				echo 'data: '.$element[1].PHP_EOL;
 				echo PHP_EOL;
 				flush();
@@ -269,10 +269,32 @@ class UnifiedPushProviderController extends Controller {
 	 * @return JsonResponse
 	 */
 	public function deleteApp(string $token){
+		$redis = $this->redis_connect();
+
+		$query = $this->db->getQueryBuilder();
+		$query->select('*')
+			->from('uppush_applications')
+			->where($query->expr()->eq('token', $query->createNamedParameter($token)));
+		$result = $query->execute();
+		$deviceId = null;
+		if ($row = $result->fetch()){
+			$deviceId = $row['device_id'];
+		}
+		if ($deviceId === null) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
+
 		$query = $this->db->getQueryBuilder();
 		$query->delete('uppush_applications')
 			->where($query->expr()->eq('token', $query->createNamedParameter($token)));
 		$query->execute();
+
+		$messageDict = [
+			'type' => "deleteApp",
+			'token' => $token,
+			'message' => ""
+		];
+
+		$redis->lPush($deviceId, json_encode($messageDict));
+
 		return new JSONResponse(['success' => true]);
 	}
 
