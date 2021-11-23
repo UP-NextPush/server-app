@@ -62,8 +62,7 @@ class UnifiedPushProviderController extends Controller {
 		$query = $this->db->getQueryBuilder();
 		$query->select('*')
 			->from('uppush_devices')
-			->where($query->expr()->eq('device_id', $query->createNamedParameter($deviceId)))
-			->andWhere($query->expr()->eq('user_id', $query->createNamedParameter($this->userSession->getUser()->getUID())));
+			->where($query->expr()->eq('device_id', $query->createNamedParameter($deviceId)));
 
 		$result = $query->execute();
 		$resultId = null;
@@ -84,10 +83,19 @@ class UnifiedPushProviderController extends Controller {
 	 */
 	public function setKeepalive(string $keepalive){
 		$keepalive = filter_var($keepalive, FILTER_SANITIZE_NUMBER_INT);
+		try {
+			$query = $this->db->getQueryBuilder();
+			$query->delete('uppush_config')
+				->where($query->expr()->eq('parameter', $query->createNamedParameter('keepalive')));
+			$query->execute();
+		} catch (Exception $ex) {
+		}
 		$query = $this->db->getQueryBuilder();
-		$query->update('uppush_config')
-			->set('value', $query->createNamedParameter($keepalive))
-			->where($query->expr()->eq('parameter', $query->createNamedParameter('keepalive')));
+		$query->insert('uppush_config')
+			->values([
+			'parameter' => $query->createNamedParameter('keepalive'),
+			'value' => $query->createNamedParameter($keepalive)
+			]);
 		$query->execute();
 		return new JSONResponse(['success' => true]);
 	}
@@ -123,10 +131,11 @@ class UnifiedPushProviderController extends Controller {
 
 	/**
 	 * Request to get push messages.
+	 * This is a public page since it has to be handle by the non-connected app
+	 * (NextPush app and not Nextcloud-app)
 	 *
-	 * @CORS
 	 * @NoCSRFRequired
-	 * @NoAdminRequired
+	 * @PublicPage
 	 *
 	 * @param string $deviceId
 	 */
@@ -151,12 +160,14 @@ class UnifiedPushProviderController extends Controller {
 		header('Content-Type: text/event-stream');
 		flush();
 
-		echo '{"type":"start"}'.PHP_EOL;
+		echo 'event: start'.PHP_EOL;
+		echo 'data: {"type":"start"}'.PHP_EOL;
 		echo PHP_EOL;
 		flush();
 
 		if ($subcount > 144){
-			echo '{"type":"warning","message":"Connected '.$subcount.' times in 12 hours"}'.PHP_EOL;
+			echo 'event: warning'.PHP_EOL;
+			echo 'data: {"type":"warning","message":"Connected '.$subcount.' times in 12 hours"}'.PHP_EOL;
 			echo PHP_EOL;
 			flush();
 		}
@@ -173,16 +184,18 @@ class UnifiedPushProviderController extends Controller {
 
 		while (true){
 			$element = $redis->brPop($deviceId, intval($keepalive));
-			if ($element !== false && is_array($element) && array_key_exists(1, $element)){
+			if (!is_null($element) && is_array($element) && array_key_exists(1, $element)){
 				if (strpos($element[1], 'shutdown') === 0){
 					if (getmypid() != explode("_", $element[1])[1]) return(0);
 					else continue;
 				}
-				echo $element[1].PHP_EOL;
+				echo 'event: message'.PHP_EOL;
+				echo 'data: '.$element[1].PHP_EOL;
 				echo PHP_EOL;
 				flush();
 			} else {
-				echo '{"type":"ping"}'.PHP_EOL;
+				echo 'event: ping'.PHP_EOL;
+				echo 'data: {"type":"ping"}'.PHP_EOL;
 				echo PHP_EOL;
 				flush();
 			}
@@ -291,7 +304,7 @@ class UnifiedPushProviderController extends Controller {
 		if ($deviceId === null) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
 
 		$messageDict = [
-    			'type' => "message",
+			'type' => "message",
 			'token' => $token,
 			'message' => base64_encode($message)
 		];
