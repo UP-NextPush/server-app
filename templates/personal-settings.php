@@ -65,10 +65,10 @@ table td, table th {
 <p>This service, along with the Distributor application, allows messages to be delivered to application supporting UnifiedPush. Like Firebase Cloud Messaging works with Google Play Service.</p>
 <br>
 <p>The Distributor application source code and issue tracker can be found here;<br>
-<a style="color: blue; text-decoration: underline;" href="#soon">#soon</a></p>
+<a style="color: blue; text-decoration: underline;" href="https://github.com/UP-NextPush/android">https://github.com/UP-NextPush/android</a></p>
 <br>
 <br>
-<a href="#soon" download="sooon"><button class="button">Install from Github Release</button></a>
+<a href="https://github.com/UP-NextPush/android/releases"><button class="button">Install from Github Release</button></a>
 <br>
 </div>
 <div id="uppush-auth" class="section">
