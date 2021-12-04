@@ -6,6 +6,7 @@ namespace OCA\UnifiedPushProvider\Controller;
 use OC_Util;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IConfig;
