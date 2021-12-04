@@ -1,7 +1,7 @@
 # NextPush - Server App
 UnifiedPush provider for Nextcloud - server application 
 
-_This is still a WIP version_
+_This is still a beta version_
 
 ## Requirement
 
