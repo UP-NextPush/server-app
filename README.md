@@ -1,8 +1,6 @@
 # NextPush - Server App
 UnifiedPush provider for Nextcloud - server application 
 
-_This is still a beta version_
-
 ## Requirement
 
 It require the nextcloud server to be installed with Redis.
