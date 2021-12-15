@@ -43,7 +43,10 @@ class UnifiedPushProviderController extends Controller {
 
 		$redis = new Redis();
 		$redis->connect($redis_config['host'], $redis_config['port']) or $this->err_die ("Redis connect error.");
-		if (array_key_exists('password', $redis_config)) $redis->auth($redis_config['password']);
+		if (array_key_exists('password', $redis_config) && $redis_config['password'] !== ''){
+			error_log("Nextcloud/UnifiedPushProvider: Connecting to redis without password");
+			$redis->auth($redis_config['password']);
+		}
 		$redis->select($redis_db) or $this->err_die ("Redis database select error.");
 
 		return $redis;
