@@ -42,5 +42,15 @@ return [
 			'url' => '/push/{token}',
 			'verb' => 'GET',
 		],
+		[
+			'name' => 'UnifiedPushProvider#gatewayMatrixDiscovery',
+			'url' => '/gateway/matrix',
+			'verb' => 'GET',
+		],
+		[
+			'name' => 'UnifiedPushProvider#gatewayMatrix',
+			'url' => '/gateway/matrix',
+			'verb' => 'POST',
+		],
 	]
 ];

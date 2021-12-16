@@ -73,6 +73,31 @@ class UnifiedPushProviderController extends Controller {
 		return ($resultId !== null);
 	}
 
+	function _push(string $token, string $message){
+		$redis = $this->redis_connect();
+
+		$query = $this->db->getQueryBuilder();
+		$query->select('*')
+			->from('uppush_applications')
+			->where($query->expr()->eq('token', $query->createNamedParameter($token)));
+		$result = $query->execute();
+		$deviceId = null;
+		if ($row = $result->fetch()){
+			$deviceId = $row['device_id'];
+		}
+		if ($deviceId === null) return false;
+
+		$messageDict = [
+			'type' => "message",
+			'token' => $token,
+			'message' => base64_encode($message)
+		];
+
+		$redis->lPush($deviceId, json_encode($messageDict));
+
+		return true;
+	}
+
 	/**
 	 * Set keepalive interval.
 	 *
@@ -313,27 +338,9 @@ class UnifiedPushProviderController extends Controller {
 	public function push(string $token){
 		$message = file_get_contents('php://input');
 
-		$redis = $this->redis_connect();
-
-		$query = $this->db->getQueryBuilder();
-		$query->select('*')
-			->from('uppush_applications')
-			->where($query->expr()->eq('token', $query->createNamedParameter($token)));
-		$result = $query->execute();
-		$deviceId = null;
-		if ($row = $result->fetch()){
-			$deviceId = $row['device_id'];
+		if(!$this->_push($token, $message)){
+			return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
 		}
-		if ($deviceId === null) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
-
-		$messageDict = [
-			'type' => "message",
-			'token' => $token,
-			'message' => base64_encode($message)
-		];
-
-		$redis->lPush($deviceId, json_encode($messageDict));
-
 		return new JSONResponse(['success' => true]);
 	}
 
@@ -352,6 +359,51 @@ class UnifiedPushProviderController extends Controller {
 				'unifiedpush' => [
 					'version' => 1
 				]
+			]);
+	}
+
+	/**
+	 * GATEWAYS
+	 */
+
+	/**
+	 * Matrix Gateway discovery
+	 *
+	 * @CORS
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 *
+	 * @return JsonResponse
+	 */
+	public function gatewayMatrixDiscovery(){
+		return new JSONResponse([
+				'unifiedpush' => [
+					'gateway' => 'matrix'
+				]
+			]);
+	}
+
+	/**
+	 * Matrix Gateway
+	 *
+	 * @CORS
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 *
+	 * @return JsonResponse
+	 */
+	public function gatewayMatrix(){
+		$message = file_get_contents('php://input');
+		$pushkey = json_decode($message)->notification->devices[0]->pushkey;
+		$exploded_pushkey = explode('/', $pushkey);
+		$token = end($exploded_pushkey);
+		if(!$this->_push($token, $message)){
+			return new JSONResponse([
+					'rejected' => [$pushkey]
+				]);
+		}
+		return new JSONResponse([
+				'rejected' => []
 			]);
 	}
 }
