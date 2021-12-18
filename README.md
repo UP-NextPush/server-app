@@ -34,6 +34,24 @@ _Apache_ (php configuration):
     </Proxy>
 ```
 
+## Gateways
+
+The app can be used as a personal matrix gateway. It requires to pass requests to the path `/_matrix/push/v1/notify` to `/index.php/apps/uppush/gateway/matrix`.
+
+_Nginx_:
+
+```
+    location /_matrix/push/v1/notify {
+        proxy_pass http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix;
+    }
+```
+
+_Apache_:
+
+```
+ProxyPass "/_matrix/push/v1/notify" http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix
+```
+
 ## Credit
 
 This application has been inspired by [Nextcloud Push Notifier](https://gitlab.com/Nextcloud-Push/direct-push-proxy-v2)
