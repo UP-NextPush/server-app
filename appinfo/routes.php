@@ -4,7 +4,7 @@ return [
 	'routes' => [
 		[
 			'name' => 'UnifiedPushProvider#setKeepalive',
-			'url' => '/setkeepalive/',
+			'url' => '/keepalive/',
 			'verb' => 'PUT',
 		],
 		[

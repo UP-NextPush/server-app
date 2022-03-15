@@ -21,7 +21,7 @@ function setKeepalive(){
 		var data = {};
 		data.keepalive = keepalive;
 		var json = JSON.stringify(data);
-		xhr.open("PUT", "../../index.php/apps/uppush/setkeepalive/", true);
+		xhr.open("PUT", "../../index.php/apps/uppush/keepalive/", true);
 		xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
 		xhr.send(json);
 	}

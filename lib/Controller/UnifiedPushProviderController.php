@@ -212,6 +212,11 @@ class UnifiedPushProviderController extends Controller {
 			$keepalive = $row['value'];
 		}
 
+		echo 'event: keepalive'.PHP_EOL;
+		echo 'data: {"type":"keepalive","keepalive":'.$keepalive.'}'.PHP_EOL;
+		echo PHP_EOL;
+		flush();
+
 		while (true){
 			$element = $redis->brPop($deviceId, intval($keepalive));
 			if (!is_null($element) && is_array($element) && array_key_exists(1, $element)){
