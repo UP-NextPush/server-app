@@ -1,32 +1,10 @@
+<?php script("uppush", "admin"); ?>
 <style>
 table td, table th {
 	padding: 5px;
 	word-break: break-all;
 }
 </style>
-<script nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
-document.addEventListener('DOMContentLoaded', function(){
-	document.getElementById("setKeepaliveBtn").addEventListener("click", setKeepalive);
-});
-function setKeepalive(){
-	console.log("setKeepalive run...");
-	var keepalive = document.getElementById("keepalive").value
-	if (keepalive.length > 0){
-		var xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-    				console.log("Keepalive=" + keepalive);
-			}
-		};
-		var data = {};
-		data.keepalive = keepalive;
-		var json = JSON.stringify(data);
-		xhr.open("PUT", "../../index.php/apps/uppush/keepalive/", true);
-		xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-		xhr.send(json);
-	}
-}
-</script>
 <div id="uppush-admin" class="section">
 <h2>UnifiedPush Provider Settings</h2>
 <p class="settings-hint">Set up the service and solve common problems.</p>
