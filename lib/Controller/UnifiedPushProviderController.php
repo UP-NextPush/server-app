@@ -402,17 +402,20 @@ class UnifiedPushProviderController extends Controller {
 	 * @return JsonResponse
 	 */
 	public function gatewayMatrix(){
-		$message = file_get_contents('php://input');
-		$pushkey = json_decode($message)->notification->devices[0]->pushkey;
-		$exploded_pushkey = explode('/', $pushkey);
-		$token = end($exploded_pushkey);
-		if(!$this->_push($token, $message)){
-			return new JSONResponse([
-					'rejected' => [$pushkey]
-				]);
+		$message = json_decode(file_get_contents('php://input'));
+		$rejected = [];
+		$devices = $message->notification->devices;
+		unset($message->notification->devices);
+		foreach ($devices as $device) {
+			$pushkey = $device->pushkey;
+			$exploded_pushkey = explode('/', $pushkey);
+			$token = end($exploded_pushkey);
+			if(!$this->_push($token, json_encode($message))){
+				array_push($rejected, $pushkey);
+			}
 		}
 		return new JSONResponse([
-				'rejected' => []
+				'rejected' => $rejected
 			]);
 	}
 }
