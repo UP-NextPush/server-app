@@ -38,7 +38,6 @@ function deleteApp(id) {
     xhr.send();
 }
 document.addEventListener('DOMContentLoaded', function(){
-    alert(1)
     var toggleDeviceButtons = document.getElementsByClassName("toggle-device");
     for (let i = 0; i < toggleDeviceButtons.length; i++) {
         shrink(toggleDeviceButtons[i].id);
