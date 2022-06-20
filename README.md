@@ -11,15 +11,14 @@ UnifiedPush provider for Nextcloud - server application
 1.) Clone the git repository to __<your_nextcloud_dir>/apps/uppush__ :
 
 ```
-cd /<nextcloud_dir>/apps/
-git clone https://github.com/UP-NextPush/server-app/ nextcloud/apps/uppush
+git clone https://github.com/UP-NextPush/server-app/ <your_nextcloud_dir>/apps/uppush
 ```
 
 2.) Configure your reverse proxy.  The reverse proxy needs to be configured as a personal matrix gateway, with long timeout, and without buffering.
 
 ### nginx
 
-Add the following to the end of your Nextcloud nginx configuration, replacing `your.nextcloud.tld` with your instance:
+Add the following to the end of your Nextcloud nginx configuration, replacing `your.nextcloud.tld` with your instance's hostname:
 
 ```
 ...
