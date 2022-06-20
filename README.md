@@ -24,13 +24,13 @@ Add the following to the end of your Nextcloud nginx configuration, replacing `y
 ```
 ...
 
-location /_matrix/push/v1/notify {
-    proxy_pass http://<your.nextcloud.tld>/index.php/apps/uppush/gateway/matrix;
-    proxy_connect_timeout   10m;
-    proxy_send_timeout      10m;
-    proxy_read_timeout      10m;
-    proxy_buffering off;
-}
+    location /_matrix/push/v1/notify {
+        proxy_pass http://<your.nextcloud.tld>/index.php/apps/uppush/gateway/matrix;
+        proxy_connect_timeout   10m;
+        proxy_send_timeout      10m;
+        proxy_read_timeout      10m;
+        proxy_buffering off;
+    }
 ```
 
 ### apache
@@ -40,10 +40,10 @@ Add the following inside your `VirtualHost` block:
 ```
 ...
 
-    ProxyTimeout 600
-    <Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10>
-    </Proxy>
-    ProxyPass "/_matrix/push/v1/notify" http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix
+        ProxyTimeout 600
+        <Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10>
+        </Proxy>
+        ProxyPass "/_matrix/push/v1/notify" http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix
 ```
 
 
