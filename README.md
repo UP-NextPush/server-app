@@ -8,54 +8,45 @@ UnifiedPush provider for Nextcloud - server application
 
 ## Installation
 
-1. The app had to be installed to __nextcloud/apps/uppush__ :
+1.) Clone the git repository to __<your_nextcloud_dir>/apps/uppush__ :
 
 ```
+cd /<nextcloud_dir>/apps/
 git clone https://github.com/UP-NextPush/server-app/ nextcloud/apps/uppush
 ```
 
-2. The reverse-proxy need to be configured for long timeout :
+2.) Configure your reverse proxy.  The reverse proxy needs to be configured as a personal matrix gateway, with long timeout, and without buffering.
 
-_Nginx_: - Server Block
-```
-proxy_connect_timeout   10m;
-proxy_send_timeout      10m;
-proxy_read_timeout      10m;
-```
+### nginx
 
-_Apache_: - VirtalHost Block
-```
-ProxyTimeout 600
-```
+Add the following to the end of your Nextcloud nginx configuration, replacing `your.nextcloud.tld` with your instance:
 
-3. The reverse-proxy need to be configured without buffering :
-
-_Nginx_: - Server Block
 ```
-proxy_buffering off;
-```
+...
 
-_Apache_ (php configuration): - VirtalHost Block
-```
-<Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10>
-</Proxy>
-```
-
-## Gateways
-
-The app can be used as a personal matrix gateway. It requires to pass requests to the path `/_matrix/push/v1/notify` to `/index.php/apps/uppush/gateway/matrix`.
-
-_Nginx_: - Server Block
-```
 location /_matrix/push/v1/notify {
-    proxy_pass http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix;
+    proxy_pass http://<your.nextcloud.tld>/index.php/apps/uppush/gateway/matrix;
+    proxy_connect_timeout   10m;
+    proxy_send_timeout      10m;
+    proxy_read_timeout      10m;
+    proxy_buffering off;
 }
 ```
 
-_Apache_: - VirtalHost Block
+### apache
+
+Add the following inside your `VirtualHost` block: 
+
 ```
-ProxyPass "/_matrix/push/v1/notify" http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix
+...
+
+    ProxyTimeout 600
+    <Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10>
+    </Proxy>
+    ProxyPass "/_matrix/push/v1/notify" http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix
 ```
+
+
 
 ## Credit
 
