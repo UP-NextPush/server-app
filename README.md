@@ -8,42 +8,42 @@ UnifiedPush provider for Nextcloud - server application
 
 ## Installation
 
-1. The app had to be installed to __nextcloud/apps/uppush__ :
+1. Install this Nextcloud application from the store: https://apps.nextcloud.com/apps/uppush .
 
-```
-git clone https://github.com/UP-NextPush/server-app/ nextcloud/apps/uppush
-```
+2. Configure the reverse-proxy. ([See examples of reverse-proxy conf](reverse_proxy_examples))
 
-2. The reverse-proxy need to be configured for long timeout :
+    a. The reverse-proxy need to be configured for long timeout :
 
-_Nginx_: - Server Block
-```
-proxy_connect_timeout   10m;
-proxy_send_timeout      10m;
-proxy_read_timeout      10m;
-```
+    _Nginx_: - Server Block
+    ```
+    proxy_connect_timeout   10m;
+    proxy_send_timeout      10m;
+    proxy_read_timeout      10m;
+    ```
 
-_Apache_: - VirtalHost Block
-```
-ProxyTimeout 600
-```
+    _Apache_: - VirtalHost Block
+    ```
+    ProxyTimeout 600
+    ```
 
-3. The reverse-proxy need to be configured without buffering :
+    b. The reverse-proxy need to be configured without buffering :
 
-_Nginx_: - Server Block
-```
-proxy_buffering off;
-```
+    _Nginx_: - Server Block
+    ```
+    proxy_buffering off;
+    ```
 
-_Apache_ (php configuration): - VirtalHost Block
-```
-<Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10>
-</Proxy>
-```
+    _Apache_ (php configuration): - VirtalHost Block
+    ```
+    <Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10>
+    </Proxy>
+    ```
 
 ## Gateways
 
 The app can be used as a personal matrix gateway. It requires to pass requests to the path `/_matrix/push/v1/notify` to `/index.php/apps/uppush/gateway/matrix`.
+
+[See examples of reverse-proxy conf](reverse_proxy_examples)
 
 _Nginx_: - Server Block
 ```
@@ -55,6 +55,14 @@ location /_matrix/push/v1/notify {
 _Apache_: - VirtalHost Block
 ```
 ProxyPass "/_matrix/push/v1/notify" http://127.0.0.1:5000/index.php/apps/uppush/gateway/matrix
+```
+
+## Development
+
+Clone the repository to __nextcloud/apps/uppush__ instead of installing from Nextcloud store.
+
+```
+git clone https://github.com/UP-NextPush/server-app/ nextcloud/apps/uppush
 ```
 
 ## Credit
