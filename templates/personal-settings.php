@@ -24,9 +24,9 @@ table td, table th {
 <?php
 $devices = $_['devices'];
 foreach($devices as $device) {
-    $deviceName = filter_var($device['name'],FILTER_SANITIZE_STRING);
-    $deviceDate = filter_var($device['date'],FILTER_SANITIZE_STRING);
-    $deviceToken = filter_var($device['token'],FILTER_SANITIZE_STRING);
+    $deviceName = filter_var($device['name'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $deviceDate = filter_var($device['date'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $deviceToken = filter_var($device['token'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     echo "
         <li id='li-".$deviceToken."'>".$deviceName." (".$deviceDate.") <button id='toggle-".$deviceToken."' class='toggle-device'> </button> <button id='delete-".$deviceToken."' class='delete-device'>Delete</button></li>
         <table cellpadding=3 id='table-".$deviceToken."'>
@@ -42,9 +42,9 @@ foreach($devices as $device) {
     ";
     $apps = $device['apps'];
     foreach($apps as $app) {
-        $appName = filter_var($app['name'],FILTER_SANITIZE_STRING);
-        $appDate = filter_var($app['date'],FILTER_SANITIZE_STRING);
-        $appToken = filter_var($app['token'],FILTER_SANITIZE_STRING);
+        $appName = filter_var($app['name'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $appDate = filter_var($app['date'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $appToken = filter_var($app['token'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         echo "
                 <tr id='tr-".$appToken."'>
                     <th></th>

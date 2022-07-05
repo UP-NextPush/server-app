@@ -142,7 +142,6 @@ class UnifiedPushProviderController extends Controller {
 	 * @return JsonResponse
 	 */
 	public function createDevice(string $deviceName){
-		$deviceName = filter_var($deviceName, FILTER_SANITIZE_STRING);
 		$deviceId = $this->uuid();
 		$query = $this->db->getQueryBuilder();
 		$query->insert('uppush_devices')
@@ -275,7 +274,6 @@ class UnifiedPushProviderController extends Controller {
 	 */
 	public function createApp(string $deviceId, string $appName){
 		if (!$this->checkDeviceId($deviceId)) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
-		$appName = filter_var($appName, FILTER_SANITIZE_STRING);
 		$token = $this->uuid();
 
 		$query = $this->db->getQueryBuilder();
