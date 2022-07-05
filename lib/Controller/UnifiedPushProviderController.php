@@ -218,7 +218,13 @@ class UnifiedPushProviderController extends Controller {
 			$element = $redis->brPop($deviceId, intval($keepalive));
 			if (!is_null($element) && is_array($element) && array_key_exists(1, $element)){
 				if (strpos($element[1], 'shutdown') === 0){
-					if (getmypid() != explode("_", $element[1])[1]) return(0);
+					if (getmypid() != explode("_", $element[1])[1]) {
+						echo 'event: close'.PHP_EOL;
+						echo 'data: {"type":"close"}'.PHP_EOL;
+						echo PHP_EOL;
+						flush();
+						exit(0);
+					}
 					else continue;
 				}
 				echo 'event: '.json_decode($element[1])->type.PHP_EOL;
