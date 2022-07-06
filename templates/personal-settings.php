@@ -28,8 +28,8 @@ foreach($devices as $device) {
     $deviceDate = filter_var($device['date'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $deviceToken = filter_var($device['token'],FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     echo "
-        <li id='li-".$deviceToken."'>".$deviceName." (".$deviceDate.") <button id='toggle-".$deviceToken."' class='toggle-device'> </button> <button id='delete-".$deviceToken."' class='delete-device'>Delete</button></li>
-        <table cellpadding=3 id='table-".$deviceToken."'>
+        <li id='li-".$deviceToken."'>".$deviceName." (".$deviceDate.") <button id='toggle-".$deviceToken."' class='toggle-device'>+</button> <button id='delete-".$deviceToken."' class='delete-device'>Delete</button></li>
+        <table cellpadding=3 id='table-".$deviceToken."' hidden>
             <thead>
                 <tr>
                     <th></th>
