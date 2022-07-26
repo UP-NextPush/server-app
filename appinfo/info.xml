@@ -7,7 +7,7 @@
     <description><![CDATA[Once the mobile phone is connected with NextPush, push notifications can be forwarded to applications implementing UnifiedPush.
 
 More information about UnifiedPush at https://unifiedpush.org]]></description>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <licence>agpl</licence>
     <author mail="c+nextpush-dev@sgougeon.fr" >S1m</author>
     <namespace>UnifiedPushProvider</namespace>
