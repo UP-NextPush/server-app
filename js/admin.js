@@ -10,7 +10,7 @@ function setKeepalive() {
 		let data = {}
 		data.keepalive = keepalive
 		let json = JSON.stringify(data)
-		xhr.open("PUT", "../../index.php/apps/uppush/keepalive/", true)
+		xhr.open("PUT", "../../apps/uppush/keepalive/", true)
 		xhr.setRequestHeader('Content-type','application/json charset=utf-8')
 		xhr.send(json)
 	}

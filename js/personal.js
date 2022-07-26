@@ -21,7 +21,7 @@ function deleteDevice(id) {
                     document.getElementById("table-"+deviceId).remove()
             }
         }
-        xhr.open("DELETE", "../../index.php/apps/uppush/device/" + deviceId, true)
+        xhr.open("DELETE", "../../apps/uppush/device/" + deviceId, true)
         xhr.send()
     }
 }
@@ -34,7 +34,7 @@ function deleteApp(id) {
                 document.getElementById("tr-"+appId).remove()
         }
     }
-    xhr.open("DELETE", "../../index.php/apps/uppush/app/" + appId, true)
+    xhr.open("DELETE", "../../apps/uppush/app/" + appId, true)
     xhr.send()
 }
 document.addEventListener('DOMContentLoaded', function(){
