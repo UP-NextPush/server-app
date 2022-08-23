@@ -3,28 +3,28 @@ declare(strict_types=1);
 
 namespace OCA\UnifiedPushProvider\Controller;
 
-use OC_Util;
-use OCP\IRequest;
+use DateTime;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\Diagnostics\IEventLogger;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUserSession;
-use Redis;
-use DateTime;
+use OC\RedisFactory;
+use OC\SystemConfig;
+use OC_Util;
 
 class UnifiedPushProviderController extends Controller {
 
 	private $db;
-	private $config;
 	private $userSession;
+	private $redisFactory;
 
-	public function __construct(IConfig $config, IDBConnection $db, IUserSession $userSession){
-		$this->config = $config;
+	public function __construct(SystemConfig $config, IEventLogger $eventLogger, IDBConnection $db, IUserSession $userSession){
 		$this->db = $db;
 		$this->userSession = $userSession;
+		$this->redisFactory = new RedisFactory($config, $eventLogger);
 	}
 
 	function err_die($message){
@@ -33,22 +33,7 @@ class UnifiedPushProviderController extends Controller {
 	}
 
 	function redis_connect(){
-		$redis_db = 1;
-
-		if (!class_exists('Redis')) $this->err_die("Redis is not installed.");
-
-		$redis_config = $this->config->getSystemValue("redis");
-		if (!is_array($redis_config)) $this->err_die("Redis is not configured in nextcloud config.php.");
-		if (array_key_exists("dbindex", $redis_config)) $redis_db = $redis_config['dbindex'] + 1;
-
-		$redis = new Redis();
-		$redis->connect($redis_config['host'], $redis_config['port']) or $this->err_die ("Redis connect error.");
-		if (array_key_exists('password', $redis_config) && $redis_config['password'] !== ''){
-			$redis->auth($redis_config['password']);
-		}
-		$redis->select($redis_db) or $this->err_die ("Redis database select error.");
-
-		return $redis;
+		return $this->redisFactory->getInstance();
 	}
 
 	function uuid(){
