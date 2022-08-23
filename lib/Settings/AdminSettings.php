@@ -2,48 +2,32 @@
 namespace OCA\UnifiedPushProvider\Settings;
 
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Settings\ISettings;
+use OCP\Diagnostics\IEventLogger;
 use OCP\IDBConnection;
-use OCP\IConfig;
-use OCP\IGroupManager;
-use OCP\IUserSession;
-use Redis;
+use OCP\Settings\ISettings;
+use OC\RedisFactory;
+use OC\SystemConfig;
 
 class AdminSettings implements ISettings {
 
-	private $config;
 	private $db;
-	private $userSession;
-	private $groupManager;
+	private $redisFactory;
 
-	function checkRedis() {
-		$redis_db = 1;
-
-		if (!class_exists('Redis')) return "Redis is not installed.";
-
-		$redis_config = $this->config->getSystemValue("redis");
-		if (!is_array($redis_config)) return "Redis is not configured in nextcloud config.php.";
-		if (array_key_exists("dbindex", $redis_config)) $redis_db = $redis_config['dbindex'] + 1;
-
-		$redis = new Redis();
-		if (!$redis->connect($redis_config['host'], $redis_config['port'])) {
-			return "Cannot connect to Redis.";
-		}
-		if (array_key_exists('password', $redis_config) && $redis_config['password'] !== '') {
-			$redis->auth($redis_config['password']);
-		}
-		if(!$redis->select($redis_db)) {
-			return "Cannot select in Redis.";
-		}
-
-		return "";
+	public function __construct(SystemConfig $config, IEventLogger $eventLogger, IDBConnection $db){
+		$this->db = $db;
+		$this->redisFactory = new RedisFactory($config, $eventLogger);
 	}
 
-	public function __construct(IConfig $config, IDBConnection $db, IUserSession $userSession, IGroupManager $groupManager){
-		$this->config = $config;
-		$this->db = $db;
-		$this->userSession = $userSession;
-		$this->groupManager = $groupManager;
+	private function checkRedis() {
+		if (!$this->redisFactory->isAvailable()) {
+			return "Redis support is not available";
+		}
+		try {
+			$this->redisFactory->getInstance();
+		} catch (\Exception $e) {
+			return $e->getMessage();
+		}
+		return "";
 	}
 
 	public function getForm() {
