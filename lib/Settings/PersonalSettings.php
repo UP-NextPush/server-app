@@ -4,19 +4,16 @@ namespace OCA\UnifiedPushProvider\Settings;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Settings\ISettings;
 use OCP\IDBConnection;
-use OCP\IGroupManager;
 use OCP\IUserSession;
 
 class PersonalSettings implements ISettings {
 
 	private $db;
 	private $userSession;
-	private $groupManager;
 
-	public function __construct(IDBConnection $db, IUserSession $userSession, IGroupManager $groupManager){
+	public function __construct(IDBConnection $db, IUserSession $userSession){
 		$this->db = $db;
 		$this->userSession = $userSession;
-		$this->groupManager = $groupManager;
 	}
 
 	public function getForm() {
