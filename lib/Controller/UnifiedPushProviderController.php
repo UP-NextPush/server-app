@@ -32,10 +32,6 @@ class UnifiedPushProviderController extends Controller {
 		exit(1);
 	}
 
-	function redis_connect(){
-		return $this->redisFactory->getInstance();
-	}
-
 	function uuid(){
 		return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 		  mt_rand(0, 0xffff), mt_rand(0, 0xffff),
@@ -61,7 +57,7 @@ class UnifiedPushProviderController extends Controller {
 	}
 
 	function _push(string $token, string $message){
-		$redis = $this->redis_connect();
+		$redis = $this->redisFactory->getInstance();
 
 		$query = $this->db->getQueryBuilder();
 		$query->select('*')
@@ -157,7 +153,7 @@ class UnifiedPushProviderController extends Controller {
 		ini_set("default_socket_timeout", "600");
 		set_time_limit(0);
 
-		$redis = $this->redis_connect();
+		$redis = $this->redisFactory->getInstance();
 
 		$redis->rPush($deviceId, "shutdown_".getmypid());
 
@@ -291,7 +287,7 @@ class UnifiedPushProviderController extends Controller {
 	 * @return JsonResponse
 	 */
 	public function deleteApp(string $token){
-		$redis = $this->redis_connect();
+		$redis = $this->redisFactory->getInstance();
 
 		$query = $this->db->getQueryBuilder();
 		$query->select('*')
