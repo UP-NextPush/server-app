@@ -14,6 +14,7 @@ use OCP\IUserSession;
 use OC\RedisFactory;
 use OC\SystemConfig;
 use OC_Util;
+use Redis;
 
 class UnifiedPushProviderController extends Controller {
 
@@ -150,10 +151,10 @@ class UnifiedPushProviderController extends Controller {
 	public function syncDevice(string $deviceId){
 		if (!$this->checkDeviceId($deviceId)) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
 
-		ini_set("default_socket_timeout", "600");
 		set_time_limit(0);
 
 		$redis = $this->redisFactory->getInstance();
+		$redis->setOption(Redis::OPT_READ_TIMEOUT, -1);
 
 		$redis->rPush($deviceId, "shutdown_".getmypid());
 
