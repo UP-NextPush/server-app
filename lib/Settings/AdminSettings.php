@@ -42,7 +42,7 @@ class AdminSettings implements ISettings {
 			->from('uppush_config')
 			->where($query->expr()->eq('parameter', $query->createNamedParameter("keepalive")));
 		$result = $query->execute();
-		$keepalive = "300";
+		$keepalive = "50";
 		while ($row = $result->fetch()){
 			$keepalive = $row['value'];
 		}

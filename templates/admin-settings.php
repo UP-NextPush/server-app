@@ -7,18 +7,15 @@ table td, table th {
 </style>
 <div id="uppush-admin" class="section">
 <h2>UnifiedPush Provider Settings</h2>
-<p class="settings-hint">Set up the service and solve common problems.</p>
-<p>This has been set up with the objective of making installation and configuration as painless as possible, however, there are certain requirements that must be met in order for the system to perform correctly.</p>
+<p>The objective of this service is to make installation and configuration as easy as possible, but there are certain requirements that must be met for the system to work correctly.</p>
 <br><div>
-<b>1)</b> This service required Redis to be installed and configured for use by Nextcloud. The database ID used will be 1 higher than the database ID used by Nextcloud.<br>
-<b>2)</b> Maximum PHP processes must be set sufficiently high. Each user connected for push messaging will require their own PHP process running, therefore you must set the process limits sufficiently high in order to serve not only the needs of all push clients, but other web clients as well. If you anticipate a maximum of 200 push clients to be connected simultaneously and require an additional 100 servers for web traffic, then you should set your process limit to at least 300. The parameter to adjust in your php-fpm configuration is <b>pm.max_children</b>.<br>
-<br><h2>If a proxy is in use, including access to PHP being by way of fastCGI...</h2>
-<b>3)</b> Elimination of buffering. Most web server stacks can be instructed to flush buffers by issuing a flush() in php, however, this most notably does not work when using php-fpm. This buffering can result in pushed messages being delayed. In order for messages to be delivered instantaneously, it is necessary to eliminate this additional buffering. In Apache, this can be done by adding the below to your php configuration;<br>
-<b>
-&lt;Proxy "fcgi://localhost/" disablereuse=on flushpackets=on max=10&gt;<br>
-&lt;/Proxy&gt;<br></b><br>
-<b>4)</b> Web server proxy timeout should be set to at least 10 minutes. Connection to PHP will typically be by way of fastCGI, which uses the proxy infrastructure of your web server. If you observe clients frequently reconnecting, typically at 1 minute intervals, it means that the proxy is timing out before the keep-alive message is issued. Default keep-alive's are issued at 300 second (5 minute) intervals. In Apache, you can add <b>ProxyTimeout 600</b> to your Nextcloud virtual host.<br>
-<br>If it isn't possible to set the proxy timeout to a sensible amount of time, an alternative is to reduce the time interval between keep-alive messages so that they are issued within the available timeout, such as 55 seconds. This may cause an increase in power consumption for the mobile device.
+<ol>
+<li><b>The service requires Redis to be installed and configured for use by Nextcloud.</b></li>
+<li>The maximum number of PHP processes must be set high enough. Each user connected for push messaging will need their own PHP process running, so you must set the process limits high enough to serve not only the needs of all push clients, but also other web clients. For example, if you expect a maximum of 200 push clients to be connected simultaneously and an additional 100 servers for web traffic, you should set your process limit to at least 300. The parameter to adjust in your PHP-FPM configuration is <code>pm.max_children</code>.</li>
+<li><b>Buffering must be disabled.</b> Most web server stacks can be instructed to flush buffers by issuing a flush() in PHP, but this does not work when using PHP-FPM. This buffering can cause delayed pushed messages. To ensure that messages are delivered instantly, it is necessary to eliminate this additional buffering.</li>
+<li><b>In order to reduce battery consumption, the web server proxy timeout should be set to 360 seconds or higher.</b> Connection to PHP is typically through fastCGI, which uses the proxy infrastructure of your web server. If you see clients frequently reconnecting, usually at 1 minute intervals, it means that the proxy is timing out before the keep-alive message is sent. <b>Once the proxy timeout is configured, you can set increase timeout of this application to 300 seconds.</b></li>
+</ol>
+<br>
 <div><input type="text" id="keepalive" placeholder="Keep-alive interval" value="<?php echo filter_var ( $_['keepalive'], FILTER_SANITIZE_NUMBER_INT); ?>";>
 <button class="button" id="setKeepaliveBtn">Set keep-alive</button>
 </div>

@@ -186,7 +186,7 @@ class UnifiedPushProviderController extends Controller {
 			->from('uppush_config')
 			->where($query->expr()->eq('parameter', $query->createNamedParameter("keepalive")));
 		$result = $query->execute();
-		$keepalive = "300";
+		$keepalive = "50";
 		if ($row = $result->fetch()){
 			$keepalive = $row['value'];
 		}
