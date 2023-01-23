@@ -36,6 +36,7 @@ return [
 			'name' => 'UnifiedPushProvider#push',
 			'url' => '/push/{token}',
 			'verb' => 'POST',
+                        'requirements' => array('token' => '.*'),
 		],
 		[
 			'name' => 'UnifiedPushProvider#unifiedpushDiscovery',
