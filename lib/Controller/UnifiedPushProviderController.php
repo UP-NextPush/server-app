@@ -60,6 +60,7 @@ class UnifiedPushProviderController extends Controller {
 	function _push(string $token, string $message){
 		$redis = $this->redisFactory->getInstance();
 
+                $token = explode("/", $token)[0];
 		$query = $this->db->getQueryBuilder();
 		$query->select('*')
 			->from('uppush_applications')
