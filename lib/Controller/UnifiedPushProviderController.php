@@ -83,6 +83,16 @@ class UnifiedPushProviderController extends Controller {
 	}
 
 	/**
+	 *
+	 * @NoCSRFRequired
+	 *
+	 * @return JsonResponse
+	 */
+	public function check(){
+		return new JSONResponse(['success' => true]);
+	}
+
+	/**
 	 * Set keepalive interval.
 	 *
 	 * @NoCSRFRequired

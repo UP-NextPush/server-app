@@ -3,6 +3,11 @@
 return [
 	'routes' => [
 		[
+			'name' => 'UnifiedPushProvider#check',
+			'url' => '/',
+			'verb' => 'GET',
+		],
+		[
 			'name' => 'UnifiedPushProvider#setKeepalive',
 			'url' => '/keepalive/',
 			'verb' => 'PUT',
