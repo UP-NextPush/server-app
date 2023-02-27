@@ -342,9 +342,9 @@ class UnifiedPushProviderController extends Controller {
 		$message = file_get_contents('php://input');
 
 		if(!$this->_push($token, $message)){
-			return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
+			return new JSONResponse(['success' => false], Http::STATUS_NOT_FOUND);
 		}
-		return new JSONResponse(['success' => true]);
+		return new JSONResponse(['success' => true], Http::STATUS_CREATED);
 	}
 
 	/**
