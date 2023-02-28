@@ -85,6 +85,7 @@ class UnifiedPushProviderController extends Controller {
 	/**
 	 *
 	 * @NoCSRFRequired
+	 * @NoAdminRequired
 	 *
 	 * @return JsonResponse
 	 */
