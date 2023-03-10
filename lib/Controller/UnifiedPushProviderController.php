@@ -98,12 +98,11 @@ class UnifiedPushProviderController extends Controller {
 	 *
 	 * @NoCSRFRequired
 	 *
-	 * @param string $keepalive
+	 * @param int $keepalive
 	 *
 	 * @return JsonResponse
 	 */
-	public function setKeepalive(string $keepalive){
-		$keepalive = filter_var($keepalive, FILTER_SANITIZE_NUMBER_INT);
+	public function setKeepalive(int $keepalive){
 		try {
 			$query = $this->db->getQueryBuilder();
 			$query->delete('uppush_config')
