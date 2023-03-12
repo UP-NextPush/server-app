@@ -87,7 +87,7 @@ class UnifiedPushProviderController extends Controller {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function check(){
 		return new JSONResponse(['success' => true]);
@@ -100,7 +100,7 @@ class UnifiedPushProviderController extends Controller {
 	 *
 	 * @param string $keepalive
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function setKeepalive(string $keepalive){
 		$keepalive = filter_var($keepalive, FILTER_SANITIZE_NUMBER_INT);
@@ -130,7 +130,7 @@ class UnifiedPushProviderController extends Controller {
 	 *
 	 * @param string $deviceName
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function createDevice(string $deviceName){
 		$deviceId = $this->uuid();
@@ -241,7 +241,7 @@ class UnifiedPushProviderController extends Controller {
 	 *
 	 * @param string $deviceId
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function deleteDevice(string $deviceId){
 		if (!$this->checkDeviceId($deviceId)) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
@@ -267,7 +267,7 @@ class UnifiedPushProviderController extends Controller {
 	 * @param string $deviceId
 	 * @param string $appName
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function createApp(string $deviceId, string $appName){
 		if (!$this->checkDeviceId($deviceId)) return new JSONResponse(['success' => false], Http::STATUS_UNAUTHORIZED);
@@ -296,7 +296,7 @@ class UnifiedPushProviderController extends Controller {
 	 *
 	 * @param string $token
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function deleteApp(string $token){
 		$redis = $this->redisFactory->getInstance();
@@ -337,7 +337,7 @@ class UnifiedPushProviderController extends Controller {
 	 *
 	 * @param string $token
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function push(string $token){
 		$message = file_get_contents('php://input');
@@ -356,7 +356,7 @@ class UnifiedPushProviderController extends Controller {
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function unifiedpushDiscovery(){
 		return new JSONResponse([
@@ -377,7 +377,7 @@ class UnifiedPushProviderController extends Controller {
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function gatewayMatrixDiscovery(){
 		return new JSONResponse([
@@ -394,7 +394,7 @@ class UnifiedPushProviderController extends Controller {
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 *
-	 * @return JsonResponse
+	 * @return JSONResponse
 	 */
 	public function gatewayMatrix(){
 		$message = json_decode(file_get_contents('php://input'));
