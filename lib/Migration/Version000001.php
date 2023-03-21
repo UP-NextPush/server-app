@@ -43,6 +43,7 @@ class Version000001 extends SimpleMigrationStep {
 			$table->addColumn('date', 'string', [
 				'notnull' => true,
 			]);
+			$table->setPrimaryKey(['token']);
 		}
 		if (!$schema->hasTable('uppush_devices')) {
 			$table = $schema->createTable('uppush_devices');
@@ -58,6 +59,7 @@ class Version000001 extends SimpleMigrationStep {
 			$table->addColumn('date', 'string', [
 				'notnull' => true,
 			]);
+			$table->setPrimaryKey(['device_id']);
 		}
 		if (!$schema->hasTable('uppush_config')) {
 			$table = $schema->createTable('uppush_config');
@@ -67,6 +69,7 @@ class Version000001 extends SimpleMigrationStep {
 			$table->addColumn('value', 'string', [
 				'notnull' => true,
 			]);
+			$table->setPrimaryKey(['parameter']);
 		}
 		return $schema;
 	}
