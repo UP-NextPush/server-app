@@ -14,7 +14,7 @@ More information about UnifiedPush at https://unifiedpush.org]]></description>
     <category>multimedia</category>
     <bugs>https://github.com/UP-NextPush/server-app</bugs>
     <dependencies>
-        <nextcloud min-version="19" max-version="26"/>
+        <nextcloud min-version="19" max-version="27"/>
     </dependencies>
     <settings>
         <admin>OCA\UnifiedPushProvider\Settings\AdminSettings</admin>
