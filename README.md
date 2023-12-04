@@ -1,5 +1,7 @@
 # NextPush - Server App
 
+Moved to <https://codeberg.org/NextPush/uppush>
+
 UnifiedPush provider for Nextcloud - server application 
 
 ## Requirement
